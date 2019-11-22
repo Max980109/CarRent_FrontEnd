@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import CustomerUpdate from "./CustomerUpdate";
 
 class Customers extends React.Component {
     constructor(props) {
@@ -8,15 +9,26 @@ class Customers extends React.Component {
             customers: [],
             name: '',
             driversLicence: '',
-            phone: ''
+            phone: '',
+            updateView: null
         };
         // this.handleGetCustomerClick = this.handleGetCustomerClick.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleUpdateClick = this.handleUpdateClick.bind(this);
+        this.finishUpdate = this.finishUpdate.bind(this);
     }
 
     async componentDidMount() {
+        this.getCustomers();
+    }
+
+    async componentDidUpdate() {
+        this.getCustomers();
+    }
+
+    async getCustomers() {
         const response = await axios.get('https://super-rent.appspot.com/customers');
         const customers = response.data;
         this.setState({customers});
@@ -63,14 +75,27 @@ class Customers extends React.Component {
         this.setState({ driversLicence: '', name: '', phone: ''});
     }
 
-    async handleViewClick(event) {
+    async handleUpdateClick(event) {
         event.preventDefault();
         const id = event.target.id;
         const response = await axios.get(`https://super-rent.appspot.com/customers/${id}`);
+        const customer = response.data;
+        const { name, phone, driversLicence } = customer;
 
+        this.setState({updateView: <CustomerUpdate name={name} phone={phone} prevDriversLicence={driversLicence} finishUpdate={this.finishUpdate}/>});
+
+        //this.setState({updateView: false});
+    }
+
+    finishUpdate() {
+        //event.preventDefault();
+        this.setState({updateView: null});
     }
 
         render() {
+        if (this.state.updateView)
+            return this.state.updateView;
+
         const customers = this.state.customers;
 
         // const customerTable = customers.map(function (c) {
@@ -81,7 +106,7 @@ class Customers extends React.Component {
         const customerTable = customers.map(c => <li>
             <p>{`licence: ${c.driversLicence} --- name:${c.name}  --- phone: ${c.phone}`}</p>
             <button onClick={this.handleDeleteClick} id={c.driversLicence}>Delete</button>
-            <button onClick={this.handleViewClick} id ={c.driversLicence}>View</button>
+            <button onClick={this.handleUpdateClick} id ={c.driversLicence}>Update</button>
         </li>);
 
         return <div>
