@@ -5,18 +5,27 @@ class Vehicles extends React.Component {
     constructor(props) {
         super(props);
         this.state = { vehicles: [] };
-        this.handleGetClick = this.handleGetClick.bind(this);
+        // this.handleGetClick = this.handleGetClick.bind(this);
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
     }
 
-    async handleGetClick(event) {
-        event.preventDefault();
+    async componentDidMount() {
         const response = await axios.get('https://super-rent.appspot.com/vehicles');
         const vehicles = response.data;
-        alert('Loaded vehicle data from server!');
-        console.log(vehicles);
         this.setState({ vehicles });
+
     }
+
+   // https://super-rent.appspot.com/vehicles/
+
+    // async handleGetClick(event) {
+    //     event.preventDefault();
+    //     const response = await axios.get('https://super-rent.appspot.com/vehicles');
+    //     const vehicles = response.data;
+    //     alert('Loaded vehicle data from server!');
+    //     console.log(vehicles);
+    //     this.setState({ vehicles });
+    // }
 
     async handleDeleteClick(event) {
         event.preventDefault();
@@ -29,19 +38,23 @@ class Vehicles extends React.Component {
         this.setState({vehicles});
     }
 
+
+
+
     render() {
         const vehicles = this.state.vehicles;
 
         const vehicleTable = vehicles.map(v => <li>
-            <p>{v.vehicleLicence}</p>
-            <p>{v.color}</p>
+            <p>{`VehicleLicense: ${v.vehicleLicence} --- Location: ${v.location} --- City: ${v.city} --- Type: ${v.vehicleTypeName} ---
+            Color: ${v.color} --- Status: ${v.status}`}</p>
             <button onClick={this.handleDeleteClick} id={v.vehicleLicence}>Delete</button>
+
         </li>);
 
         return <div>
             <h1>vehicles</h1>
-            <button onClick={this.handleGetClick} style={{cursor: 'pointer'}}>get all vehicles</button>
-            <ul>
+            {/* <button onClick={this.handleGetClick} style={{cursor: 'pointer'}}>get all vehicles</button> */}
+            <ul style={{listStyle: 'none'}}>
                 {vehicleTable}
             </ul>
         </div>

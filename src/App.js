@@ -22,7 +22,7 @@ class App extends React.Component {
     const { activeTable } = this.state;
     if (activeTable === '') table = null;
     else if (activeTable === 'customers') table = <Customers/>;
-    else if (activeTable === 'vehicles') table= <Vehicles />
+    else if (activeTable === 'vehicles') table= <Vehicles />;
 
     return (
         <div className="App">
