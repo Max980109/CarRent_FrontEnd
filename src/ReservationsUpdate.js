@@ -62,8 +62,7 @@ class ReservationsUpdate extends React.Component{
         return (
             <div>
                 <form>
-                    <h3> Add New Reservations</h3>
-                    <h5> (auto generate confNum, refresh to show result）</h5>
+                    <h3> Update Reservations</h3>
                     <TextField id="driverLicenceInput" label="DriversLicence" value={this.state.driversLicence} onChange={this.handleChange} />
                     <Select id="vehicleTypeNameInput" onChange={this.handleTypeSelectChange} value={this.state.vehicleTypeName} >
                         <MenuItem value="Compact">Compact</MenuItem>

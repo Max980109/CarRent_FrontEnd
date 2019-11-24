@@ -23,6 +23,8 @@ class Reservations extends React.Component{
         this.handleUpdateClick = this.handleUpdateClick.bind(this);
         this.finishUpdate = this.finishUpdate.bind(this);
         this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
+        this.handleSearchChange = this.handleSearchChange.bind(this);
+        this.handleSearchSubmit = this.handleSearchSubmit.bind(this);
     }
 
     async componentDidMount() {
@@ -45,11 +47,17 @@ class Reservations extends React.Component{
     }
 
     handleChange(event) {
+        event.preventDefault();
         const inputId = event.target.id;
         const input = event.target.value;
         if (inputId === 'driverLicenceInput') this.setState({driversLicence: input});
         if (inputId === 'fromDateInput') this.setState({fromDate: input});
         if (inputId === 'toDateInput') this.setState({toDate: input});
+    }
+
+    handleSearchChange(event) {
+        event.preventDefault();
+        this.setState({confNum: event.target.value });
     }
 
     async handleSubmit(event) {
@@ -75,6 +83,18 @@ class Reservations extends React.Component{
         }
         this.setState({ driversLicence: '', fromDate: '', toDate: '', vehicleTypeName: ''});
         alert("add successfully");
+    }
+
+    async handleSearchSubmit(event) {
+        event.preventDefault();
+        const confNum = this.state.confNum;
+        try {
+            const res = await axios.get(`https://super-rent.appspot.com/reservations/${confNum}`);
+            const reservations = res.data;
+            this.setState({reservations: [reservations], confNum: ''});
+        }catch (e) {
+            alert("error: your confirmation number is incorrect or not exist");
+        }
     }
 
     async handleUpdateClick(event) {
@@ -117,7 +137,8 @@ class Reservations extends React.Component{
         return <div>
             <h1>Reservations</h1>
             <form>
-                <h3> Update Reservations</h3>
+                <h3> Add New Reservations</h3>
+                <h5> (auto generate confNum, refresh to show result）</h5>
                 <TextField id="driverLicenceInput" label="DriversLicence" onChange={this.handleChange} />
                 <Select id="vehicleTypeNameInput" onChange={this.handleTypeSelectChange} >
                     <MenuItem value="Compact">Compact</MenuItem>
@@ -146,6 +167,12 @@ class Reservations extends React.Component{
                 />
                 <button onClick={this.handleSubmit}>Submit</button>
             </form>
+            <h3> Search Reservation by confNUm</h3>
+            <form>
+                <TextField id="confNumInput" label="confNum" onChange={this.handleSearchChange} />
+                <button onClick={this.handleSearchSubmit}>Search</button>
+            </form>
+
             <ul style={{listStyle: 'none'}}>
                 <h4>Found {reservationTable.length} items</h4>
                 {reservationTable}
