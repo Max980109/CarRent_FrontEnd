@@ -32,6 +32,7 @@ class Vehicles extends React.Component {
         this.finishUpdate = this.finishUpdate.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
         this.handleFilterSubmit = this.handleFilterSubmit.bind(this);
+        this.handleTypeSelectChange = this.handleTypeSelectChange.bind(this);
     }
 
     async componentDidMount() {
@@ -130,15 +131,19 @@ class Vehicles extends React.Component {
     }
 
     handleFilterChange(event) {
+        console.log(event.target)
         event.preventDefault();
         const id = event.target.id;
         const value = event.target.value;
         if (id === "filter_location") this.setState({filter_location: value});
         if (id === "filter_fromDate") this.setState({filter_fromDate: value});
         if (id === "filter_toDate") this.setState({filter_toDate: value});
-        if (id === "filter_vehicleType") this.setState({filter_vehicleType: value});
     }
 
+    handleTypeSelectChange(event) {
+        event.preventDefault();
+        this.setState({ filter_vehicleType: event.target.value });
+    }
 
 
 
@@ -222,7 +227,7 @@ class Vehicles extends React.Component {
                         shrink: true,
                     }}
                 />
-                <Select id="filter_vehicleType" onChange={this.handleFilterChange} >
+                <Select id="filter_vehicleType" onChange={this.handleTypeSelectChange} >
                     <MenuItem value="Compact">Compact</MenuItem>
                     <MenuItem value="Mid-size">Mid-size</MenuItem>
                     <MenuItem value="Standard">Standard</MenuItem>
