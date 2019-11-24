@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "axios";
-import CustomerUpdate from "./CustomerUpdate";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
+import ReservationsUpdate from "./ReservationsUpdate";
 
 class Reservations extends React.Component{
     constructor(props) {
@@ -14,7 +14,8 @@ class Reservations extends React.Component{
             driversLicence: '',
             fromDate: '',
             toDate: '',
-            vehicleTypeName: ''
+            vehicleTypeName: '',
+            updateView: null
         };
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -37,9 +38,10 @@ class Reservations extends React.Component{
     async handleDeleteClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        await axios.delete(`http://localhost:5000/customers/${id}`);
-        const customers = this.state.customers.filter(customer => customer.driverLicense !== id);
-        this.setState({customers});
+        await axios.delete(`https://super-rent.appspot.com/reservations/${id}`);
+        const reservations = this.state.reservations.filter(r => r.driversLicence !== id);
+        this.setState({reservations});
+        alert("delete successfully");
     }
 
     handleChange(event) {
@@ -72,15 +74,21 @@ class Reservations extends React.Component{
             });
         }
         this.setState({ driversLicence: '', fromDate: '', toDate: '', vehicleTypeName: ''});
+        alert("add successfully");
     }
 
     async handleUpdateClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        const response = await axios.get(`http://localhost:5000/customers/${id}`);
-        const customer = response.data;
-        const { name, phone, driverLicense } = customer;
-        this.setState({updateView: <CustomerUpdate name={name} phone={phone} prevDriversLicence={driverLicense} finishUpdate={this.finishUpdate}/>});
+        const response = await axios.get(`https://super-rent.appspot.com/reservations/${id}`);
+        const reservations = response.data;
+        const { confNum,
+            driversLicence,
+            fromDate,
+            toDate,
+            vehicleTypeName} = reservations;
+        this.setState({updateView: <ReservationsUpdate prevconfNum={confNum} driversLicence={driversLicence} fromDate={fromDate}
+                                                       toDate={toDate} vehicleTypeName = {vehicleTypeName} finishUpdate={this.finishUpdate}/>});
     }
 
     handleTypeSelectChange(event) {
@@ -90,7 +98,7 @@ class Reservations extends React.Component{
 
     finishUpdate() {
         this.setState({updateView: null});
-        this.getCustomers();
+        this.getReservations();
     }
 
     render() {
@@ -109,8 +117,7 @@ class Reservations extends React.Component{
         return <div>
             <h1>Reservations</h1>
             <form>
-                <h3> Add New Reservations</h3>
-                <h5> (auto generate confNum）</h5>
+                <h3> Update Reservations</h3>
                 <TextField id="driverLicenceInput" label="DriversLicence" onChange={this.handleChange} />
                 <Select id="vehicleTypeNameInput" onChange={this.handleTypeSelectChange} >
                     <MenuItem value="Compact">Compact</MenuItem>

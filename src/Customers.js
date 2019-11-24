@@ -38,6 +38,7 @@ class Customers extends React.Component {
         await axios.delete(`http://localhost:5000/customers/${id}`);
         const customers = this.state.customers.filter(customer => customer.driverLicense !== id);
         this.setState({customers});
+        alert("delete successfully");
     }
 
     handleChange(event) {
@@ -59,6 +60,7 @@ class Customers extends React.Component {
         });
         alert('submit was sent');
         this.setState({ driverLicense: '', name: '', phone: ''});
+        alert("add successfully");
     }
 
     async handleUpdateClick(event) {
@@ -91,7 +93,7 @@ class Customers extends React.Component {
             <h1>Customers</h1>
             <form>
                 <label>
-                    Add New Customer--
+                    Add New Customer (refresh to show results)--
                     DriverLicence:
                     <input type="text" id="driverLicenseInput" value={this.state.driverLicense} onChange={this.handleChange} />
                 </label>

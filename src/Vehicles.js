@@ -44,10 +44,10 @@ class Vehicles extends React.Component {
     async handleDeleteClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        alert(`id is ${id}`);
         await axios.delete(`https://super-rent.appspot.com/vehicles/${id}`);
         const vehicles = this.state.vehicles.filter(vehicle => vehicle.vehicleLicence !== id);
         this.setState({vehicles});
+        alert("delete successfully");
     }
 
     async handleUpdateClick(event) {
@@ -111,6 +111,7 @@ class Vehicles extends React.Component {
         });
         alert("submitted");
         this.setState({vehicleLicence: '', make: '', model: '', year: '', status: '', vehicleTypeName: '', location: '', city: ''});
+        alert("add successfully");
     }
 
     async handleFilterSubmit(event) {
@@ -145,10 +146,6 @@ class Vehicles extends React.Component {
         this.setState({ filter_vehicleType: event.target.value });
     }
 
-
-
-
-
     render() {
         if (this.state.updateView)
             return this.state.updateView;
@@ -165,6 +162,7 @@ class Vehicles extends React.Component {
         return <div>
             <h1>Vehicles</h1>
             <h3>Add new Vehicles</h3>
+            <h5>refresh to show results</h5>
             <form>
                 <label>
                     Add New Vehicle--
