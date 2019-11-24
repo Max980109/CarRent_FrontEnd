@@ -31,7 +31,7 @@ class Vehicles extends React.Component {
         this.getVehicles = this.getVehicles.bind(this);
         this.finishUpdate = this.finishUpdate.bind(this);
         this.handleFilterChange = this.handleFilterChange.bind(this);
-        this.handleFilterSubmit = this.handleFilterChange.bind(this);
+        this.handleFilterSubmit = this.handleFilterSubmit.bind(this);
     }
 
     async componentDidMount() {
@@ -113,18 +113,16 @@ class Vehicles extends React.Component {
     }
 
     async handleFilterSubmit(event) {
-        alert("chech submit");
         event.preventDefault();
         const location = this.state.filter_location;
         const fromDate = this.state.filter_fromDate;
         const toDate = this.state.filter_toDate;
         const vehicleTypeName = this.state.filter_vehicleType;
         let url = `https://super-rent.appspot.com/vehicles?`;
-        if (location !== '' && location !== null) url += `&${location}`;
-        if (fromDate !== '' && fromDate !== null) url += `&${fromDate}`;
-        if (toDate !== '' && fromDate !== null) url += `&${toDate}`;
-        if (vehicleTypeName !== '' && fromDate !== null) url += `&${vehicleTypeName}`;
-        alert("chech submit");
+        if (location !== '' && location !== null) url += `location=${location}`;
+        if (fromDate !== '' && fromDate !== null) url += `&fromDate=${fromDate}`;
+        if (toDate !== '' && toDate !== null) url += `&toDate=${toDate}`;
+        if (vehicleTypeName !== '' && vehicleTypeName !== null) url += `&vehicleTypeName=${vehicleTypeName}`;
         const response = await axios.get(url);
         const vehicles = response.data;
         this.setState({vehicles});
@@ -212,7 +210,6 @@ class Vehicles extends React.Component {
                            id="filter_fromDate"
                            label="From"
                            type="date"
-                           defaultValue="2017-05-24"
                            InputLabelProps={{
                                shrink: true,
                            }}
@@ -221,7 +218,6 @@ class Vehicles extends React.Component {
                     id="filter_toDate"
                     label="To"
                     type="date"
-                    defaultValue="2017-06-24"
                     InputLabelProps={{
                         shrink: true,
                     }}
