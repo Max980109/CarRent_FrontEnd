@@ -13,6 +13,7 @@ class Menu extends React.Component {
             <ul style={{listStyle: 'none'}}>
                 <li> <button style={style} id="customers" onClick={this.props.changeActiveTableTo}>Customers</button></li>
                 <li> <button style={style} id="vehicles" onClick={this.props.changeActiveTableTo}>Vehicles</button></li>
+                <li> <button style={style} id="reservations" onClick={this.props.changeActiveTableTo}>Reservations</button> </li>
             </ul>
         </div>
     }

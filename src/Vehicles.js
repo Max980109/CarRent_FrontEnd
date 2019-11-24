@@ -19,7 +19,7 @@ class Vehicles extends React.Component {
             location: '',
             city: '',
             updateView: null,
-            filter_location: '',
+            filter_city: '',
             filter_fromDate: '',
             filter_toDate: '',
             filter_vehicleType: ''
@@ -115,12 +115,12 @@ class Vehicles extends React.Component {
 
     async handleFilterSubmit(event) {
         event.preventDefault();
-        const location = this.state.filter_location;
+        const city= this.state.filter_city;
         const fromDate = this.state.filter_fromDate;
         const toDate = this.state.filter_toDate;
         const vehicleTypeName = this.state.filter_vehicleType;
         let url = `https://super-rent.appspot.com/vehicles?`;
-        if (location !== '' && location !== null) url += `location=${location}`;
+        if (city!== '' && city !== null) url += `city=${city}`;
         if (fromDate !== '' && fromDate !== null) url += `&fromDate=${fromDate}`;
         if (toDate !== '' && toDate !== null) url += `&toDate=${toDate}`;
         if (vehicleTypeName !== '' && vehicleTypeName !== null) url += `&vehicleTypeName=${vehicleTypeName}`;
@@ -131,11 +131,11 @@ class Vehicles extends React.Component {
     }
 
     handleFilterChange(event) {
-        console.log(event.target)
+        console.log(event.target);
         event.preventDefault();
         const id = event.target.id;
         const value = event.target.value;
-        if (id === "filter_location") this.setState({filter_location: value});
+        if (id === "filter_city") this.setState({filter_city: value});
         if (id === "filter_fromDate") this.setState({filter_fromDate: value});
         if (id === "filter_toDate") this.setState({filter_toDate: value});
     }
@@ -207,8 +207,8 @@ class Vehicles extends React.Component {
                 <label>
                     Filter Vehicle
                     <TextField onChange={this.handleFilterChange}
-                        id="filter_location"
-                        label="Location"
+                        id="filter_city"
+                        label="City"
                     />
                 </label>
                 <TextField onChange={this.handleFilterChange}
