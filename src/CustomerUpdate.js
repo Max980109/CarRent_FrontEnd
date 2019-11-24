@@ -6,9 +6,9 @@ class CustomerUpdate extends React.Component {
         super(props);
         this.state = {
             name: this.props.name,
-            driversLicence: this.props.prevDriversLicence,
+            driverLicense: this.props.prevDriversLicence,
             phone: this.props.phone
-        }
+        };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -16,23 +16,22 @@ class CustomerUpdate extends React.Component {
     handleChange(event) {
         const inputId = event.target.id;
         const input = event.target.value;
-        if (inputId === 'driversLicenceInput') this.setState({driversLicence: input});
+        if (inputId === 'driverLicenseInput') this.setState({driverLicense: input});
         if (inputId === 'nameInput') this.setState({name: input});
         if (inputId === 'phoneInput') this.setState({phone: input});
     }
 
     async handleSubmit(event) {
         event.preventDefault();
-        const { driversLicence, name, phone } = this.state;
-        //alert('submit will be sent');
-        await axios.put(`https://super-rent.appspot.com/customers/${this.props.prevDriversLicence}`, {
-            driversLicence,
+        const { driverLicense, name, phone } = this.state;
+        alert('submit will be sent');
+        await axios.put(`http://localhost:5000/customers/${this.props.prevDriversLicence}`, {
+            driverLicense,
             name,
             phone
         });
         alert('submit was sent');
         this.props.finishUpdate();
-       // this.setState({ driversLicence: '', name: '', phone: ''});
     }
 
     render() {
@@ -41,7 +40,7 @@ class CustomerUpdate extends React.Component {
             <label>
                 Update Customer--
                 DriverLicence:
-                <input type="text" id="driversLicenceInput" value={this.state.driversLicence} onChange={this.handleChange} />
+                <input type="text" id="driverLicenseInput" value={this.state.driverLicense} onChange={this.handleChange} />
             </label>
             <label>
                 Name:
