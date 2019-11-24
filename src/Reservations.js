@@ -167,7 +167,7 @@ class Reservations extends React.Component{
                 />
                 <button onClick={this.handleSubmit}>Submit</button>
             </form>
-            <h3> Search Reservation by confNUm</h3>
+            <h3> Search Reservation by confNum (refresh to show initial results)</h3>
             <form>
                 <TextField id="confNumInput" label="confNum" onChange={this.handleSearchChange} />
                 <button onClick={this.handleSearchSubmit}>Search</button>
