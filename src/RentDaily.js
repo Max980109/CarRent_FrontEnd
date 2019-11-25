@@ -47,5 +47,6 @@ class RentDaily extends React.Component{
             </ul>
         </div>
     }
+    
 }
 export default RentDaily;
