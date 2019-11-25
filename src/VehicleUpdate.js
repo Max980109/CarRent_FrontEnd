@@ -5,7 +5,7 @@ class VehicleUpdate extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            vehicleLicence: this.props.previousLicense,
+            vehicleLicense: this.props.previousLicense,
             make: this.props.make,
             model: this.props.model,
             year: this.props.year,
@@ -21,7 +21,7 @@ class VehicleUpdate extends React.Component{
     handleChange(event) {
         const inputId =event.target.id;
         const input = event.target.value;
-        if (inputId === 'vehicleLicenseInput') this.setState({vehicleLicence: input});
+        if (inputId === 'vehicleLicenseInput') this.setState({vehicleLicense: input});
         if (inputId === 'makeInput') this.setState({make: input});
         if (inputId === 'yearInput') this.setState({year: input});
         if (inputId === 'statusInput') this.setState({vehicleTypeName: input});
@@ -31,9 +31,9 @@ class VehicleUpdate extends React.Component{
 
     async handleSubmit(event) {
         event.preventDefault();
-        const {vehicleLicence, make, model, year, status, vehicleTypeName, location, city} = this.state;
-        await axios.put(`https://super-rent.appspot.com/vehicles/${this.props.previousLicense}`, {
-            vehicleLicence,
+        const {vehicleLicense, make, model, year, status, vehicleTypeName, location, city} = this.state;
+        await axios.put(`http://localhost:5000/vehicles/${this.props.previousLicense}`, {
+            vehicleLicense,
             make,
             model,
             year,
@@ -52,7 +52,7 @@ class VehicleUpdate extends React.Component{
                 <label>
                     Update Vehicle--
                     VehicleLicense:
-                    <input type="text" id="vehicleLicenseInput" value={this.state.vehicleLicence} onChange={this.handleChange} />
+                    <input type="text" id="vehicleLicenseInput" value={this.state.vehicleLicense} onChange={this.handleChange} />
                 </label>
                 <label>
                     Make:

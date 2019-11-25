@@ -10,7 +10,7 @@ class Vehicles extends React.Component {
         super(props);
         this.state = {
             vehicles: [],
-            vehicleLicence: '',
+            vehicleLicense: '',
             make: '',
             model: '',
             year: '',
@@ -44,8 +44,8 @@ class Vehicles extends React.Component {
     async handleDeleteClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        await axios.delete(`https://super-rent.appspot.com/vehicles/${id}`);
-        const vehicles = this.state.vehicles.filter(vehicle => vehicle.vehicleLicence !== id);
+        await axios.delete(`http://localhost:5000/vehicles/${id}`);
+        const vehicles = this.state.vehicles.filter(vehicle => vehicle.vehicleLicense !== id);
         this.setState({vehicles});
         alert("delete successfully");
     }
@@ -53,11 +53,11 @@ class Vehicles extends React.Component {
     async handleUpdateClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        const response = await axios.get(`https://super-rent.appspot.com/vehicles/${id}`);
+        const response = await axios.get(`http://localhost:5000/vehicles/${id}`);
         const vehicle = response.data;
-        const {vehicleLicence, make, model, year, status, vehicleTypeName, location, city} = vehicle;
+        const {vehicleLicense, make, model, year, status, vehicleTypeName, location, city} = vehicle;
         this.setState({updateView: <VechicleUpdate
-                previousLicense={vehicleLicence}
+                previousLicense={vehicleLicense}
                 make = {make}
                 model={model}
                 year={year}
@@ -76,7 +76,7 @@ class Vehicles extends React.Component {
     }
 
     async getVehicles() {
-        const response = await axios.get('https://super-rent.appspot.com/vehicles');
+        const response = await axios.get('http://localhost:5000/vehicles');
         const vehicles = response.data;
         this.setState({vehicles});
     }
@@ -85,7 +85,7 @@ class Vehicles extends React.Component {
         event.preventDefault();
         const id = event.target.id;
         const value = event.target.value;
-        if(id === "vehicleLicenseInput") this.setState({vehicleLicence: value});
+        if(id === "vehicleLicenseInput") this.setState({vehicleLicense: value});
         if(id === "makeInput") this.setState({make: value});
         if(id === "modelInput") this.setState({model: value});
         if(id === "yearInput") this.setState({year: value});
@@ -97,18 +97,18 @@ class Vehicles extends React.Component {
 
     async handleAddSubmit(event) {
         event.preventDefault();
-        const { vehicleLicence, make, model, year, status, vehicleTypeName, location, city} = this.state;
+        const { vehicleLicense, make, model, year, status, vehicleTypeName, location, city} = this.state;
         let checkDup = null;
         try{
-            const res = await axios.get(`https://super-rent.appspot.com/vehicles/${vehicleLicence}`);
-            checkDup = res.data.vehicleLicence;
+            const res = await axios.get(`http://localhost:5000/vehicles/${vehicleLicense}`);
+            checkDup = res.data.vehicleLicense;
             alert("there is a same vid in the table, you can't add it");
         } catch (e) {
             alert("there is no same vid in the table, you can add it");
         }
         if (checkDup === null) {
-            await axios.post('https://super-rent.appspot.com/vehicles', {
-                vehicleLicence,
+            await axios.post('http://localhost:5000/vehicles', {
+                vehicleLicense,
                 make,
                 model,
                 year,
@@ -117,7 +117,7 @@ class Vehicles extends React.Component {
                 location,
                 city
             });
-            this.setState({vehicleLicence: '', make: '', model: '', year: '', status: '', vehicleTypeName: '', location: '', city: ''});
+            this.setState({vehicleLicense: '', make: '', model: '', year: '', status: '', vehicleTypeName: '', location: '', city: ''});
             alert("add successfully");
         }
     }
@@ -128,7 +128,7 @@ class Vehicles extends React.Component {
         const fromDate = this.state.filter_fromDate;
         const toDate = this.state.filter_toDate;
         const vehicleTypeName = this.state.filter_vehicleType;
-        let url = `https://super-rent.appspot.com/vehicles?`;
+        let url = `http://localhost:5000/vehicles?`;
         if (city!== '' && city !== null) url += `city=${city}`;
         if (fromDate !== '' && fromDate !== null) url += `&fromDate=${fromDate}`;
         if (toDate !== '' && toDate !== null) url += `&toDate=${toDate}`;
@@ -161,10 +161,10 @@ class Vehicles extends React.Component {
         const vehicles = this.state.vehicles;
 
         const vehicleTable = vehicles.map(v => <li>
-            <p>{`VehicleLicense: ${v.vehicleLicence}---Make: ${v.make}---Model: ${v.model}---Year: ${v.year}---
+            <p>{`VehicleLicense: ${v.vehicleLicense}---Make: ${v.make}---Model: ${v.model}---Year: ${v.year}---
             Status: ${v.status}--- Type: ${v.vehicleTypeName}--- Location: ${v.location}--- City: ${v.city}`}</p>
-            <button onClick={this.handleDeleteClick} id={v.vehicleLicence}>Delete</button>
-            <button onClick={this.handleUpdateClick} id={v.vehicleLicence}>Update</button>
+            <button onClick={this.handleDeleteClick} id={v.vehicleLicense}>Delete</button>
+            <button onClick={this.handleUpdateClick} id={v.vehicleLicense}>Update</button>
         </li>);
 
         return <div>
@@ -175,7 +175,7 @@ class Vehicles extends React.Component {
                 <label>
                     Add New Vehicle--
                     VehicleLicense:
-                    <input type="text" id="vehicleLicenseInput" value={this.state.vehicleLicence} onChange={this.handleChange} />
+                    <input type="text" id="vehicleLicenseInput" value={this.state.vehicleLicense} onChange={this.handleChange} />
                 </label>
 
                 <label>

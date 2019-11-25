@@ -11,11 +11,11 @@ class Rents extends React.Component{
         this.state = {
             rents: [],
             confNum: null,
-            driversLicence: '',
+            driverLicense: '',
             fromDate: '',
             toDate: '',
             rentId: '',
-            vehicleLicence: '',
+            vehicleLicense: '',
         };
         this.handleDeleteClick = this.handleDeleteClick.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -30,7 +30,7 @@ class Rents extends React.Component{
     }
 
     async getRents() {
-        const response = await axios.get('https://super-rent.appspot.com/rents');
+        const response = await axios.get('http://localhost:5000/rents');
         const rents = response.data;
         this.setState({rents});
     }
@@ -38,7 +38,7 @@ class Rents extends React.Component{
     async handleDeleteClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        await axios.delete(`https://super-rent.appspot.com/rents/${id}`);
+        await axios.delete(`http://localhost:5000/rents/${id}`);
         const rents = this.state.rents.filter(rent => rent.rentId !== id);
         this.setState({rents});
         alert("delete successfully");
@@ -49,8 +49,8 @@ class Rents extends React.Component{
         const inputId = event.target.id;
         const input = event.target.value;
         if (inputId === 'confNumInput') this.setState({confNum: input});
-        if (inputId === 'driversLicenceInput') this.setState({driversLicence: input});
-        if (inputId === 'vehicleLicenceInput') this.setState({vehicleLicence: input});
+        if (inputId === 'driverLicenseInput') this.setState({driverLicense: input});
+        if (inputId === 'vehicleLicenseInput') this.setState({vehicleLicense: input});
         if (inputId === 'fromDateInput') this.setState({fromDate: input});
         if (inputId === 'toDateInput') this.setState({toDate: input});
         if (inputId === 'rentIdInput') this.setState({rentId: input});
@@ -61,7 +61,7 @@ class Rents extends React.Component{
         const {rentId, toDate} = this.state;
         let checkId = null;
         try {
-           const res = await axios.get(`https://super-rent.appspot.com/rents/${rentId}`);
+           const res = await axios.get(`http://localhost:5000/rents/${rentId}`);
            checkId = res.data.rentId;
         } catch (e) {
             alert("wrong rent Id, enter again")
@@ -69,7 +69,7 @@ class Rents extends React.Component{
         if (rentId === checkId) {
             let date = toDate;
             try {
-                await axios.post("https://super-rent.appspot.com/returns", {
+                await axios.post("http://localhost:5000/returns", {
                     rentId,
                     date
                 });
@@ -82,12 +82,12 @@ class Rents extends React.Component{
 
     async handleSubmit(event) {
         event.preventDefault();
-        const { confNum, driversLicence, vehicleLicence, fromDate, toDate } = this.state;
+        const { confNum, driverLicense, vehicleLicense, fromDate, toDate } = this.state;
         let checkCustomer = null;
         let checkConf = true;
         if (confNum !== null && confNum !== '') {
             try {
-                const res = await axios.get(`https://super-rent.appspot.com/reservations/${confNum}`);
+                const res = await axios.get(`http://localhost:5000/reservations/${confNum}`);
             } catch (e) {
                 alert("wrong confirmation number");
                 checkConf = false;
@@ -95,12 +95,12 @@ class Rents extends React.Component{
         }
         if (checkConf) {
             try {
-                const res = await axios.get(`https://super-rent.appspot.com/customers/${driversLicence}`);
-                checkCustomer = res.data.driversLicence;
+                const res = await axios.get(`http://localhost:5000/customers/${driverLicense}`);
+                checkCustomer = res.data.driverLicense;
             } catch (e) {
                 alert("you should create customer first")
             }
-            if (checkCustomer === driversLicence) {
+            if (checkCustomer === driverLicense) {
                 let checkVehicleAva = null;
                 let city = null;
                 let color = null;
@@ -110,7 +110,7 @@ class Rents extends React.Component{
                 let year = null;
                 let vehicleTypeName = null;
                 try {
-                    const res = await axios.get(`https://super-rent.appspot.com/vehicles/${vehicleLicence}`);
+                    const res = await axios.get(`http://localhost:5000/vehicles/${vehicleLicense}`);
                     city = res.data.city;
                     color = res.data.color;
                     location = res.data.location;
@@ -126,7 +126,7 @@ class Rents extends React.Component{
                 if (checkVehicleAva === "available") {
                     const status = "rented";
                     try {
-                        await axios.put(`https://super-rent.appspot.com/vehicles/${vehicleLicence}`, {
+                        await axios.put(`http://localhost:5000/vehicles/${vehicleLicense}`, {
                             status,
                             city,
                             color,
@@ -135,13 +135,13 @@ class Rents extends React.Component{
                             model,
                             year,
                             vehicleTypeName,
-                            vehicleLicence
+                            vehicleLicense
                         });
                     } catch (e) {
                         alert("unable to update vehicle status, check your connection");
                     }
                     try {
-                        await axios.post(`https://super-rent.appspot.com/rents`, {confNum,driversLicence,vehicleLicence,
+                        await axios.post(`http://localhost:5000/rents`, {confNum,driverLicense,vehicleLicense,
                             fromDate,toDate});
                         alert("create successfully");
                     } catch (e) {
@@ -155,23 +155,23 @@ class Rents extends React.Component{
         }
 
 
-        this.setState({ confNum: null, driversLicence: '', vehicleLicence: '', fromDate: '', toDate: ''});
+        this.setState({ confNum: null, driverLicense: '', vehicleLicense: '', fromDate: '', toDate: ''});
     }
 
     async handleUpdateClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        const response = await axios.get(`https://super-rent.appspot.com/rents/${id}`);
+        const response = await axios.get(`http://localhost:5000/rents/${id}`);
         const reservation = response.data;
         const { confNum,
-            driversLicence,
+            driverLicense,
             fromDate,
             toDate,
             rentId,
-            vehicleLicence} = reservation;
-        this.setState({updateView: <RentUpdate confNum={confNum} driversLicence={driversLicence}
+            vehicleLicense} = reservation;
+        this.setState({updateView: <RentUpdate confNum={confNum} driverLicense={driverLicense}
                                                    fromDate={fromDate} toDate={toDate} rentId={rentId}
-                                                   vehicleLicence={vehicleLicence} finishUpdate={this.finishUpdate}/>});
+                                                   vehicleLicense={vehicleLicense} finishUpdate={this.finishUpdate}/>});
     }
 
     finishUpdate() {
@@ -186,8 +186,8 @@ class Rents extends React.Component{
         const rents = this.state.rents;
 
         const rentsTable = rents.map(c => <li>
-            <p>{`RentId: ${c.rentId} --- ConfNum:${c.confNum}  --- DriversLicence: ${c.driversLicence}
-            --- FromDate: ${c.fromDate} --- ToDate: ${c.toDate} --- VehicleLicence: ${c.vehicleLicence}`}</p>
+            <p>{`RentId: ${c.rentId} --- ConfNum:${c.confNum}  --- DriversLicense: ${c.driverLicense}
+            --- FromDate: ${c.fromDate} --- ToDate: ${c.toDate} --- VehicleLicense: ${c.vehicleLicense}`}</p>
             <button onClick={this.handleDeleteClick} id={c.rentId}>Delete</button>
             <button onClick={this.handleUpdateClick} id ={c.rentId}>Update</button>
         </li>);
@@ -198,8 +198,8 @@ class Rents extends React.Component{
                 <h3> Rent a Vehicle</h3>
                 <h5> (auto generate rentID, refresh to show result）</h5>
                 <TextField id="confNumInput" label="confNum if exists" onChange={this.handleChange} />
-                <TextField id="vehicleLicenceInput" label="Vehicle Licence" onChange={this.handleChange} />
-                <TextField id="driversLicenceInput" label="Drivers Licence" onChange={this.handleChange} />
+                <TextField id="vehicleLicenseInput" label="Vehicle License" onChange={this.handleChange} />
+                <TextField id="driverLicenseInput" label="Drivers License" onChange={this.handleChange} />
                 <TextField onChange={this.handleChange}
                            id="fromDateInput"
                            label="From"

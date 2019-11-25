@@ -25,7 +25,7 @@ class Returns extends React.Component{
     }
 
     async getReturns() {
-        const response = await axios.get('https://super-rent.appspot.com/returns');
+        const response = await axios.get('http://localhost:5000/returns');
         const returns = response.data;
         this.setState({returns});
     }
@@ -33,7 +33,7 @@ class Returns extends React.Component{
     async handleDeleteClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        await axios.delete(`https://super-rent.appspot.com/returns/${id}`);
+        await axios.delete(`http://localhost:5000/returns/${id}`);
         const returns = this.state.returns.filter(r => r.rentId !== id);
         this.setState({returns});
         alert("delete successfully");
@@ -56,7 +56,7 @@ class Returns extends React.Component{
         const {rentId, toDate} = this.state;
         let checkId = null;
         try {
-            const res = await axios.get(`https://super-rent.appspot.com/rents/${rentId}`);
+            const res = await axios.get(`http://localhost:5000/rents/${rentId}`);
             checkId = res.data.rentId;
         } catch (e) {
             alert("wrong rent Id, enter again")
@@ -64,7 +64,7 @@ class Returns extends React.Component{
         if (rentId === checkId) {
             let date = toDate;
             try {
-                await axios.post("https://super-rent.appspot.com/returns", {
+                await axios.post("http://localhost:5000/returns", {
                     rentId,
                     date
                 })
@@ -72,7 +72,7 @@ class Returns extends React.Component{
                 alert("error, the vehicle has been returned")
             }
             try {
-                await axios.delete(`https://super-rent.appspot.com/rents/${rentId}`);
+                await axios.delete(`http://localhost:5000/rents/${rentId}`);
                 alert("Returned successfully, please go to return tab to see details");
             } catch (e) {
                 console.error("delete rent item for returned vehicle unsuccessfully ");
@@ -89,7 +89,7 @@ class Returns extends React.Component{
         let checkConf = true;
         if (confNum !== null && confNum !== '') {
             try {
-                const res = await axios.get(`https://super-rent.appspot.com/reservations/${confNum}`);
+                const res = await axios.get(`http://localhost:5000/reservations/${confNum}`);
             } catch (e) {
                 alert("wrong confirmation number");
                 checkConf = false;
@@ -97,7 +97,7 @@ class Returns extends React.Component{
         }
         if (checkConf) {
             try {
-                const res = await axios.get(`https://super-rent.appspot.com/customers/${driversLicence}`);
+                const res = await axios.get(`http://localhost:5000/customers/${driversLicence}`);
                 checkCustomer = res.data.driversLicence;
             } catch (e) {
                 alert("you should create customer first")
@@ -112,7 +112,7 @@ class Returns extends React.Component{
                 let year = null;
                 let vehicleTypeName = null;
                 try {
-                    const res = await axios.get(`https://super-rent.appspot.com/vehicles/${vehicleLicence}`);
+                    const res = await axios.get(`http://localhost:5000/vehicles/${vehicleLicence}`);
                     city = res.data.city;
                     color = res.data.color;
                     location = res.data.location;
@@ -128,7 +128,7 @@ class Returns extends React.Component{
                 if (checkVehicleAva === "available") {
                     const status = "rented";
                     try {
-                        await axios.put(`https://super-rent.appspot.com/vehicles/${vehicleLicence}`, {
+                        await axios.put(`http://localhost:5000/vehicles/${vehicleLicence}`, {
                             status,
                             city,
                             color,
@@ -143,7 +143,7 @@ class Returns extends React.Component{
                         alert("unable to update vehicle status, check your connection");
                     }
                     try {
-                        await axios.post(`https://super-rent.appspot.com/rents`, {confNum,driversLicence,vehicleLicence,
+                        await axios.post(`http://localhost:5000/rents`, {confNum,driversLicence,vehicleLicence,
                             fromDate,toDate});
                         alert("create successfully");
                     } catch (e) {
@@ -163,7 +163,7 @@ class Returns extends React.Component{
     async handleUpdateClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        const response = await axios.get(`https://super-rent.appspot.com/rents/${id}`);
+        const response = await axios.get(`http://localhost:5000/rents/${id}`);
         const reservation = response.data;
         const { confNum,
             driversLicence,

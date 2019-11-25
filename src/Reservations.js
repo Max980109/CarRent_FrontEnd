@@ -11,7 +11,7 @@ class Reservations extends React.Component{
         this.state = {
             reservations: [],
             confNum: '',
-            driversLicence: '',
+            driverLicense: '',
             fromDate: '',
             toDate: '',
             vehicleTypeName: '',
@@ -32,7 +32,7 @@ class Reservations extends React.Component{
     }
 
     async getReservations() {
-        const response = await axios.get('https://super-rent.appspot.com/reservations');
+        const response = await axios.get('http://localhost:5000/reservations');
         const reservations = response.data;
         this.setState({reservations});
     }
@@ -40,8 +40,8 @@ class Reservations extends React.Component{
     async handleDeleteClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        await axios.delete(`https://super-rent.appspot.com/reservations/${id}`);
-        const reservations = this.state.reservations.filter(r => r.driversLicence !== id);
+        await axios.delete(`http://localhost:5000/reservations/${id}`);
+        const reservations = this.state.reservations.filter(r => r.driverLicense !== id);
         this.setState({reservations});
         alert("delete successfully");
     }
@@ -50,7 +50,7 @@ class Reservations extends React.Component{
         event.preventDefault();
         const inputId = event.target.id;
         const input = event.target.value;
-        if (inputId === 'driverLicenceInput') this.setState({driversLicence: input});
+        if (inputId === 'driverLicenseInput') this.setState({driverLicense: input});
         if (inputId === 'fromDateInput') this.setState({fromDate: input});
         if (inputId === 'toDateInput') this.setState({toDate: input});
     }
@@ -62,26 +62,26 @@ class Reservations extends React.Component{
 
     async handleSubmit(event) {
         event.preventDefault();
-        const driversLicence = this.state.driversLicence;
+        const driverLicense = this.state.driverLicense;
         const fromDate = this.state.fromDate;
         const toDate = this.state.toDate;
         const vehicleTypeName = this.state.vehicleTypeName;
         let  data = null;
         try {
-            const response = await axios.get(`https://super-rent.appspot.com/customers/${driversLicence}`);
-            data = response.data.driversLicence;
+            const response = await axios.get(`http://localhost:5000/customers/${driverLicense}`);
+            data = response.data.driverLicense;
         }catch (e) {
             alert("you should create create the customer first")
         }
-        if (data === driversLicence) {
-            await axios.post('https://super-rent.appspot.com/reservations', {
-                driversLicence,
+        if (data === driverLicense) {
+            await axios.post('http://localhost:5000/reservations', {
+                driverLicense,
                 fromDate,
                 toDate,
                 vehicleTypeName
             });
         }
-        this.setState({ driversLicence: '', fromDate: '', toDate: '', vehicleTypeName: ''});
+        this.setState({ driverLicense: '', fromDate: '', toDate: '', vehicleTypeName: ''});
         alert("add successfully");
     }
 
@@ -89,7 +89,7 @@ class Reservations extends React.Component{
         event.preventDefault();
         const confNum = this.state.confNum;
         try {
-            const res = await axios.get(`https://super-rent.appspot.com/reservations/${confNum}`);
+            const res = await axios.get(`http://localhost:5000/reservations/${confNum}`);
             const reservations = res.data;
             this.setState({reservations: [reservations], confNum: ''});
         }catch (e) {
@@ -100,14 +100,14 @@ class Reservations extends React.Component{
     async handleUpdateClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        const response = await axios.get(`https://super-rent.appspot.com/reservations/${id}`);
+        const response = await axios.get(`http://localhost:5000/reservations/${id}`);
         const reservations = response.data;
         const { confNum,
-            driversLicence,
+            driverLicense,
             fromDate,
             toDate,
             vehicleTypeName} = reservations;
-        this.setState({updateView: <ReservationsUpdate prevconfNum={confNum} driversLicence={driversLicence} fromDate={fromDate}
+        this.setState({updateView: <ReservationsUpdate prevconfNum={confNum} driverLicense={driverLicense} fromDate={fromDate}
                                                        toDate={toDate} vehicleTypeName = {vehicleTypeName} finishUpdate={this.finishUpdate}/>});
     }
 
@@ -128,7 +128,7 @@ class Reservations extends React.Component{
         const reservations = this.state.reservations;
 
         const reservationTable = reservations.map(r => <li>
-            <p>{`ConfNum: ${r.confNum} --- DriversLicence:${r.driversLicence}  --- FromDate: ${r.fromDate} ---
+            <p>{`ConfNum: ${r.confNum} --- DriversLicense:${r.driverLicense}  --- FromDate: ${r.fromDate} ---
             ToDate: ${r.toDate} ---VehicleType: ${r.vehicleTypeName}`}</p>
             <button onClick={this.handleDeleteClick} id={r.confNum}>Delete</button>
             <button onClick={this.handleUpdateClick} id ={r.confNum}>Update</button>
@@ -139,7 +139,7 @@ class Reservations extends React.Component{
             <form>
                 <h3> Add New Reservations</h3>
                 <h5> (auto generate confNum, refresh to show result）</h5>
-                <TextField id="driverLicenceInput" label="DriversLicence" onChange={this.handleChange} />
+                <TextField id="driverLicenseInput" label="DriversLicense" onChange={this.handleChange} />
                 <Select id="vehicleTypeNameInput" onChange={this.handleTypeSelectChange} >
                     <MenuItem value="Compact">Compact</MenuItem>
                     <MenuItem value="Mid-size">Mid-size</MenuItem>

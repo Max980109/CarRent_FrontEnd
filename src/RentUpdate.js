@@ -8,11 +8,11 @@ class RentUpdate extends React.Component{
         super(props);
         this.state = {
             confNum: this.props.confNum,
-            driversLicence: this.props.driversLicence,
+            driverLicense: this.props.driverLicense,
             fromDate: this.props.fromDate,
             toDate: this.props.toDate,
             rentId: this.props.rentId,
-            vehicleLicence: this.props.vehicleLicence,
+            vehicleLicense: this.props.vehicleLicense,
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,22 +22,22 @@ class RentUpdate extends React.Component{
     handleChange(event) {
         const inputId = event.target.id;
         const input = event.target.value;
-        if (inputId === 'driverLicenceInput') this.setState({driversLicence: input});
-        if (inputId === 'vehicleLicenceInput') this.setState({vehicleLicenceInput: input});
+        if (inputId === 'driverLicenseInput') this.setState({driverLicense: input});
+        if (inputId === 'vehicleLicenseInput') this.setState({vehicleLicenseInput: input});
         if (inputId === 'fromDateInput') this.setState({fromDate: input});
         if (inputId === 'toDateInput') this.setState({toDate: input});
     }
 
     async handleSubmit(event) {
         event.preventDefault();
-        const {driversLicence, fromDate, toDate, vehicleLicence,confNum, rentId} = this.state;
+        const {driverLicense, fromDate, toDate, vehicleLicense,confNum, rentId} = this.state;
         try {
-            await axios.put(`https://super-rent.appspot.com/rents/${this.state.rentId}`, {
+            await axios.put(`http://localhost:5000/rents/${this.state.rentId}`, {
                 confNum,
-                driversLicence,
+                driverLicense,
                 fromDate,
                 toDate,
-                vehicleLicence,
+                vehicleLicense,
                 rentId
             });
         } catch (e) {
@@ -57,8 +57,8 @@ class RentUpdate extends React.Component{
                 <form>
                     <h3> Update Rent</h3>
                     <h5> (auto generate rentID, refresh to show result）</h5>
-                    <TextField id="vehicleLicenceInput" value={this.state.vehicleLicence} label="Vehicle Licence" onChange={this.handleChange} />
-                    <TextField id="driversLicenceInput" value={this.state.driversLicence} label="Drivers Licence" onChange={this.handleChange} />
+                    <TextField id="vehicleLicenseInput" value={this.state.vehicleLicense} label="Vehicle License" onChange={this.handleChange} />
+                    <TextField id="driverLicenseInput" value={this.state.driverLicense} label="Drivers License" onChange={this.handleChange} />
                     <TextField onChange={this.handleChange}
                                id="fromDateInput"
                                label="From"

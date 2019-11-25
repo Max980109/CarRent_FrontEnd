@@ -8,7 +8,7 @@ class ReservationsUpdate extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            driversLicence: this.props.driversLicence,
+            driverLicense: this.props.driverLicense,
             confNum: this.props.prevconfNum,
             fromDate: this.props.fromDate,
             toDate: this.props.toDate,
@@ -22,26 +22,26 @@ class ReservationsUpdate extends React.Component{
     handleChange(event) {
         const inputId = event.target.id;
         const input = event.target.value;
-        if (inputId === 'driverLicenceInput') this.setState({driversLicence: input});
+        if (inputId === 'driverLicenseInput') this.setState({driverLicense: input});
         if (inputId === 'fromDateInput') this.setState({fromDate: input});
         if (inputId === 'toDateInput') this.setState({toDate: input});
     }
 
     async handleSubmit(event) {
         event.preventDefault();
-        const { driversLicence,  fromDate, toDate, vehicleTypeName } = this.state;
+        const { driverLicense,  fromDate, toDate, vehicleTypeName } = this.state;
         let data = null;
         alert(`${fromDate}`);
         try {
-            const res = await axios.get(`https://super-rent.appspot.com/customers/${driversLicence}`);
-            data = res.data.driversLicence;
+            const res = await axios.get(`http://localhost:5000/customers/${driverLicense}`);
+            data = res.data.driverLicense;
         } catch (e) {
             alert("should create customers first");
         }
-        if (data === driversLicence) {
+        if (data === driverLicense) {
             try {
-                await axios.put(`https://super-rent.appspot.com/customers/${this.state.confNum}`, {
-                    driversLicence,
+                await axios.put(`http://localhost:5000/customers/${this.state.confNum}`, {
+                    driverLicense,
                     fromDate,
                     toDate,
                     vehicleTypeName
@@ -63,7 +63,7 @@ class ReservationsUpdate extends React.Component{
             <div>
                 <form>
                     <h3> Update Reservations</h3>
-                    <TextField id="driverLicenceInput" label="DriversLicence" value={this.state.driversLicence} onChange={this.handleChange} />
+                    <TextField id="driverLicenseInput" label="DriversLicense" value={this.state.driverLicense} onChange={this.handleChange} />
                     <Select id="vehicleTypeNameInput" onChange={this.handleTypeSelectChange} value={this.state.vehicleTypeName} >
                         <MenuItem value="Compact">Compact</MenuItem>
                         <MenuItem value="Mid-size">Mid-size</MenuItem>
