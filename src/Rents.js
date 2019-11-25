@@ -143,7 +143,6 @@ class Rents extends React.Component{
                     try {
                         await axios.post(`http://localhost:5000/rents`, {confNum,driverLicense,vehicleLicense,
                             fromDate,toDate});
-                        alert("create successfully");
                     } catch (e) {
                         alert("unsuccessful");
                     }

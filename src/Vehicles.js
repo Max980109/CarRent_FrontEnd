@@ -100,7 +100,11 @@ class Vehicles extends React.Component {
         const { vehicleLicense, make, model, year, status, vehicleTypeName, location, city} = this.state;
         let checkDup = null;
         try{
+            console.log('I will send get request')
+            console.log(`http://localhost:5000/vehicles/${vehicleLicense}`);
             const res = await axios.get(`http://localhost:5000/vehicles/${vehicleLicense}`);
+            console.log('i just returned from get request');
+            console.log(res.data);
             checkDup = res.data.vehicleLicense;
             alert("there is a same vid in the table, you can't add it");
         } catch (e) {

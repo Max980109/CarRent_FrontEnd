@@ -80,9 +80,10 @@ class Reservations extends React.Component{
                 toDate,
                 vehicleTypeName
             });
+            alert("add successfully");
         }
         this.setState({ driverLicense: '', fromDate: '', toDate: '', vehicleTypeName: ''});
-        alert("add successfully");
+
     }
 
     async handleSearchSubmit(event) {
