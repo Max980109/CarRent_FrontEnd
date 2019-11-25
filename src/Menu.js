@@ -16,6 +16,8 @@ class Menu extends React.Component {
                 <li> <button style={style} id="reservations" onClick={this.props.changeActiveTableTo}>Reservations</button> </li>
                 <li> <button style={style} id="returns" onClick={this.props.changeActiveTableTo}>Returns</button></li>
                 <li> <button style={style} id="rents" onClick={this.props.changeActiveTableTo}>Rents</button></li>
+                <li> <button style={style} id="rentsDaily" onClick={this.props.changeActiveTableTo}>RentsDaily</button></li>
+                <li> <button style={style} id="returnsDaily" onClick={this.props.changeActiveTableTo}>ReturnsDaily</button></li>
 
             </ul>
         </div>

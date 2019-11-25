@@ -5,6 +5,7 @@ import './App.css';
 import Menu from "./Menu";
 import Reservations from "./Reservations";
 import Rents from "./Rents";
+import Returns from "./Returns";
 
 class App extends React.Component {
 
@@ -27,6 +28,7 @@ class App extends React.Component {
     else if (activeTable === 'vehicles') table= <Vehicles />;
     else if (activeTable === 'reservations') table=<Reservations/>;
     else if (activeTable === 'rents') table=<Rents/>;
+    else if (activeTable === 'returns') table=<Returns/>;
 
     return (
         <div className="App">
