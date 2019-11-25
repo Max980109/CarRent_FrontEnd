@@ -25,7 +25,7 @@ class ReturnsDaily extends React.Component{
     render() {
         const reports = this.state.reports;
         const returnTable = reports.map(function (c) {
-            const detail = c.dailyRents.map(e =>
+            const detail = c.dailyReturns.map(e =>
                 <li>
                     <p>{`rentId: ${e.rentId} ---- returnDate: ${e.date} ---price: ${e.price}`}</p>
                 </li>);
@@ -39,7 +39,7 @@ class ReturnsDaily extends React.Component{
         });
 
         return <div>
-            <h1>Rents Report</h1>
+            <h1>Return Report</h1>
             <h2>Found {returnTable.length} Item </h2>
             <ul style={{listStyle: 'none'}}>
                 {returnTable}
