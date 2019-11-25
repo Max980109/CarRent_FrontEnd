@@ -9,3 +9,4 @@ class RentDaily extends React.Component{
         }
     }
 }
+export default RentDaily;

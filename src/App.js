@@ -6,6 +6,8 @@ import Menu from "./Menu";
 import Reservations from "./Reservations";
 import Rents from "./Rents";
 import Returns from "./Returns";
+import RentDaily from "./RentDaily";
+import ReturnsDaily from "./ReturnsDaily";
 
 class App extends React.Component {
 
@@ -29,6 +31,8 @@ class App extends React.Component {
     else if (activeTable === 'reservations') table=<Reservations/>;
     else if (activeTable === 'rents') table=<Rents/>;
     else if (activeTable === 'returns') table=<Returns/>;
+    else if (activeTable === 'rentsDaily') table=<RentDaily/>;
+    else if (activeTable === 'returnsDaily') table=<ReturnsDaily/>;
 
     return (
         <div className="App">

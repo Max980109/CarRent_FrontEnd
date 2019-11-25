@@ -98,20 +98,28 @@ class Vehicles extends React.Component {
     async handleAddSubmit(event) {
         event.preventDefault();
         const { vehicleLicence, make, model, year, status, vehicleTypeName, location, city} = this.state;
-        alert("will be submit");
-        await axios.post('https://super-rent.appspot.com/vehicles', {
-            vehicleLicence,
-            make,
-            model,
-            year,
-            status,
-            vehicleTypeName,
-            location,
-            city
-        });
-        alert("submitted");
-        this.setState({vehicleLicence: '', make: '', model: '', year: '', status: '', vehicleTypeName: '', location: '', city: ''});
-        alert("add successfully");
+        let checkDup = null;
+        try{
+            const res = await axios.get(`https://super-rent.appspot.com/vehicles/${vehicleLicence}`);
+            checkDup = res.data.vehicleLicence;
+            alert("there is a same vid in the table, you can't add it");
+        } catch (e) {
+            alert("there is no same vid in the table, you can add it");
+        }
+        if (checkDup === null) {
+            await axios.post('https://super-rent.appspot.com/vehicles', {
+                vehicleLicence,
+                make,
+                model,
+                year,
+                status,
+                vehicleTypeName,
+                location,
+                city
+            });
+            this.setState({vehicleLicence: '', make: '', model: '', year: '', status: '', vehicleTypeName: '', location: '', city: ''});
+            alert("add successfully");
+        }
     }
 
     async handleFilterSubmit(event) {
