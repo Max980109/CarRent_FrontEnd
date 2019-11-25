@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios"
-import CustomerUpdate from "./CustomerUpdate";
+import RentUpdate from "./RentUpdate";
 import TextField from "@material-ui/core/TextField";
 
 
@@ -22,6 +22,7 @@ class Rents extends React.Component{
         this.handleChange = this.handleChange.bind(this);
         this.handleUpdateClick = this.handleUpdateClick.bind(this);
         this.finishUpdate = this.finishUpdate.bind(this);
+        this.handleReturnSubmit = this.handleReturnSubmit.bind(this);
     }
 
     async componentDidMount() {
@@ -38,7 +39,7 @@ class Rents extends React.Component{
         event.preventDefault();
         const id = event.target.id;
         await axios.delete(`https://super-rent.appspot.com/rents/${id}`);
-        const rents = this.state.rents.filter(rent => rent.driverLicense !== id);
+        const rents = this.state.rents.filter(rent => rent.rentId !== id);
         this.setState({rents});
         alert("delete successfully");
     }
@@ -52,6 +53,37 @@ class Rents extends React.Component{
         if (inputId === 'vehicleLicenceInput') this.setState({vehicleLicence: input});
         if (inputId === 'fromDateInput') this.setState({fromDate: input});
         if (inputId === 'toDateInput') this.setState({toDate: input});
+        if (inputId === 'rentIdInput') this.setState({rentId: input});
+    }
+
+    async handleReturnSubmit(event) {
+        event.preventDefault();
+        const {rentId, toDate} = this.state;
+        let checkId = null;
+        try {
+           const res = await axios.get(`https://super-rent.appspot.com/rents/${rentId}`);
+           checkId = res.data.rentId;
+        } catch (e) {
+            alert("wrong rent Id, enter again")
+        }
+        if (rentId === checkId) {
+            let date = toDate;
+            try {
+                await axios.post("https://super-rent.appspot.com/returns", {
+                    rentId,
+                    date
+                })
+            } catch (e) {
+                alert("error, the vehicle has been returned")
+            }
+            try {
+                await axios.delete(`https://super-rent.appspot.com/rents/${rentId}`);
+            } catch (e) {
+                console.error("delete rent item for returned vehicle unsuccessfully ");
+            }
+            const rents = this.state.rents.filter(rent => rent.rentId !== rentId);
+            this.setState({rents});
+        }
     }
 
     async handleSubmit(event) {
@@ -135,10 +167,17 @@ class Rents extends React.Component{
     async handleUpdateClick(event) {
         event.preventDefault();
         const id = event.target.id;
-        const response = await axios.get(`http://localhost:5000/customers/${id}`);
-        const customer = response.data;
-        const { name, phone, driverLicense } = customer;
-        this.setState({updateView: <CustomerUpdate name={name} phone={phone} prevDriversLicence={driverLicense} finishUpdate={this.finishUpdate}/>});
+        const response = await axios.get(`https://super-rent.appspot.com/rents/${id}`);
+        const reservation = response.data;
+        const { confNum,
+            driversLicence,
+            fromDate,
+            toDate,
+            rentId,
+            vehicleLicence} = reservation;
+        this.setState({updateView: <RentUpdate confNum={confNum} driversLicence={driversLicence}
+                                                   fromDate={fromDate} toDate={toDate} rentId={rentId}
+                                                   vehicleLicence={vehicleLicence} finishUpdate={this.finishUpdate}/>});
     }
 
     finishUpdate() {
@@ -184,6 +223,19 @@ class Rents extends React.Component{
                            }}
                 />
                 <button onClick={this.handleSubmit}>Submit</button>
+            </form>
+            <form>
+                <h3> Return a Vehicle</h3>
+                <TextField id="rentIdInput" label="Rent ID" onChange={this.handleChange} />
+                <TextField onChange={this.handleChange}
+                           id="toDateInput"
+                           label="Return Date"
+                           type="date"
+                           InputLabelProps={{
+                               shrink: true,
+                           }}
+                />
+                <button onClick={this.handleReturnSubmit}>Submit</button>
             </form>
             <ul style={{listStyle: 'none'}}>
                 <h4>Found {rentsTable.length} items</h4>
