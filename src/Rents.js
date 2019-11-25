@@ -72,17 +72,11 @@ class Rents extends React.Component{
                 await axios.post("https://super-rent.appspot.com/returns", {
                     rentId,
                     date
-                })
+                });
             } catch (e) {
                 alert("error, the vehicle has been returned")
             }
-            try {
-                await axios.delete(`https://super-rent.appspot.com/rents/${rentId}`);
-            } catch (e) {
-                console.error("delete rent item for returned vehicle unsuccessfully ");
-            }
-            const rents = this.state.rents.filter(rent => rent.rentId !== rentId);
-            this.setState({rents});
+            this.setState({rentId: '', toDate: ''});
         }
     }
 
@@ -226,6 +220,7 @@ class Rents extends React.Component{
             </form>
             <form>
                 <h3> Return a Vehicle</h3>
+                <h5> If the vehicle is return successfully, please go to returns to see details</h5>
                 <TextField id="rentIdInput" label="Rent ID" onChange={this.handleChange} />
                 <TextField onChange={this.handleChange}
                            id="toDateInput"

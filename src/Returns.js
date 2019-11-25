@@ -73,6 +73,7 @@ class Returns extends React.Component{
             }
             try {
                 await axios.delete(`https://super-rent.appspot.com/rents/${rentId}`);
+                alert("Returned successfully, please go to return tab to see details");
             } catch (e) {
                 console.error("delete rent item for returned vehicle unsuccessfully ");
             }
