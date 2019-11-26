@@ -41,6 +41,7 @@ class RentDaily extends React.Component{
 
         return <div>
             <h1>Rents Report</h1>
+            <h3>Do not close, wait for refresh</h3>
             <h2>Found {rentsTable.length} Item </h2>
             <ul style={{listStyle: 'none'}}>
                 {rentsTable}

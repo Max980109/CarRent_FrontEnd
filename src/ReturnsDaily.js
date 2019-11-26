@@ -40,6 +40,7 @@ class ReturnsDaily extends React.Component{
 
         return <div>
             <h1>Return Report</h1>
+            <h3>Do not close, wait for refresh</h3>
             <h2>Found {returnTable.length} Item </h2>
             <ul style={{listStyle: 'none'}}>
                 {returnTable}

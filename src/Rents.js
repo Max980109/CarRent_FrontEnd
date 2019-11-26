@@ -152,8 +152,6 @@ class Rents extends React.Component{
                 }
             }
         }
-
-
         this.setState({ confNum: null, driverLicense: '', vehicleLicense: '', fromDate: '', toDate: ''});
     }
 
